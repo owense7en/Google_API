@@ -1,0 +1,32 @@
+from pprint import pprint
+import googlemaps
+from area import area
+import json
+import pandas as pd
+
+
+api_Key = "myapi"
+
+map_client = googlemaps.Client(api_Key)
+
+
+place = 'Karabar,Australia'
+response = map_client.geocode(place)
+pprint(response)
+
+
+format_data = ",".join(repr(e) for e in response)
+format_data = format_data.replace("\'", "\"")
+
+y = json.loads(format_data)
+lat1 = y['geometry']['viewport']['northeast']['lat']
+lng1 = y['geometry']['viewport']['northeast']['lng']
+lat2 = y['geometry']['viewport']['southwest']['lat']
+lng2 = y['geometry']['viewport']['southwest']['lng']
+
+obj = {'type':'Polygon','coordinates':[[[lat1, lng2],[lat1, lng1],
+                                        [lat2, lng1],[lat2, lng2]]]}
+
+size = area(obj)/1000000
+
+print(size)
