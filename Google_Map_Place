@@ -6,8 +6,11 @@ import pandas as pd
 import time
 
 
-def get_Place(places_result):
+def get_Place(api_Key):
 
+    map_client = googlemaps.Client(api_Key)
+    places_result = map_client.places_nearby(location='-35.366667,149.233333',
+                                             radius=20000, open_now=False, type='restaurant')
     time.sleep(3)
     #place_result  = map_client.places_nearby(page_token = places_result['next_page_token'])
 
@@ -33,11 +36,9 @@ def get_Place(places_result):
         stored_results.append(places_details['result'])
         print(count_num)
 
-        return stored_results
+    return stored_results
 
 
 api_Key = "AIzaSyAmvos6Ft4F281KQZZ_Q-YBBOUOKza1TP8"
-map_client = googlemaps.Client(api_Key)
-places_result = map_client.places_nearby(location='-35.366667,149.233333',
-                                         radius=20000, open_now=False, type='stadium')
-get_Place(places_result)
+
+get_Place(api_Key)
