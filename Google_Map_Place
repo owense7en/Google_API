@@ -5,35 +5,39 @@ import json
 import pandas as pd
 import time
 
-api_Key = "myapi"
+
+def get_Place(places_result):
+
+    time.sleep(3)
+    #place_result  = map_client.places_nearby(page_token = places_result['next_page_token'])
+
+    stored_results = []
+    count_num = 0
+    # loop through each of the places in the results, and get the place details.
+    for place in places_result['results']:
+
+        # define the place id, needed to get place details. Formatted as a string.
+        my_place_id = place['place_id']
+
+        # define the fields you would liked return. Formatted as a list.
+        my_fields = ['name','formatted_phone_number','website']
+
+        # make a request for the details.
+        places_details  = map_client.place(place_id= my_place_id , fields= my_fields)
+
+        # print the results of the details, returned as a dictionary.
+        pprint(places_details['result'])
+        count_num = count_num + 1
+
+        # store the results in a list object.
+        stored_results.append(places_details['result'])
+        print(count_num)
+
+        return stored_results
+
+
+api_Key = "AIzaSyAmvos6Ft4F281KQZZ_Q-YBBOUOKza1TP8"
 map_client = googlemaps.Client(api_Key)
-
-places_result  = map_client.places_nearby(location='-35.366667,149.233333', radius = 20000, open_now =False , type = 'massage')
-
-time.sleep(3)
-
-#place_result  = map_client.places_nearby(page_token = places_result['next_page_token'])
-
-stored_results = []
-count_num = 0
-# loop through each of the places in the results, and get the place details.
-for place in places_result['results']:
-
-    # define the place id, needed to get place details. Formatted as a string.
-    my_place_id = place['place_id']
-
-    # define the fields you would liked return. Formatted as a list.
-    my_fields = ['name','formatted_phone_number','website']
-
-    # make a request for the details.
-    places_details  = map_client.place(place_id= my_place_id , fields= my_fields)
-
-    # print the results of the details, returned as a dictionary.
-    pprint(places_details['result'])
-
-    count_num = count_num + 1
-
-    # store the results in a list object.
-    stored_results.append(places_details['result'])
-
-print(count_num)
+places_result = map_client.places_nearby(location='-35.366667,149.233333',
+                                         radius=20000, open_now=False, type='stadium')
+get_Place(places_result)
