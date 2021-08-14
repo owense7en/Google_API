@@ -39,6 +39,6 @@ def get_Place(api_Key):
     return stored_results
 
 
-api_Key = "AIzaSyAmvos6Ft4F281KQZZ_Q-YBBOUOKza1TP8"
+api_Key = "api"
 
 get_Place(api_Key)
